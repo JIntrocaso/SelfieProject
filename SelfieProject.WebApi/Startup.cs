@@ -38,9 +38,7 @@ namespace SelfieProject.WebApi
             else
             {
                 services.AddDbContext<VoteContext>(opt =>
-                    //opt.UseSqlServer(Configuration.GetConnectionString("SelfieDatabase"))
-                    opt.UseSqlServer(@"Server=tcp:selfieproject.database.windows.net,1433;Initial Catalog=SelfieProject;Persist Security Info=False;User ID=SelfieApp;Password=5ft9B7bVNPl9;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;")
-                    //opt.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB; Database=SelfieProject; Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False")
+                    opt.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB; Database=SelfieProject; Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False")
                 );
             }
             services.BuildServiceProvider().GetService<VoteContext>().Database.Migrate();
