@@ -36,20 +36,32 @@ namespace SelfieProject.WebApi.Services
 
         internal async Task<TextCamImage> GetImageAsync(Tuple<string, int> entry)
         {
+            TextCamImage image = null;
             var camera =  _repository.GetCameraByCameraNameAsync(entry.Item1.Substring(0, 2));
             var imageId = entry.Item1.Substring(2);
-            HttpResponseMessage response = await client.GetAsync($"/images/camera/{camera.Result.CameraId}/{imageId}");
+            HttpResponseMessage response = await client.GetAsync($"/images/camera/{camera.Result.CameraId_API}/{imageId}");
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadAsAsync<TextCamImage>();
+                var jsonResult = await response.Content.ReadAsStringAsync();
+                JObject apiResponse = JObject.Parse(jsonResult);
+                JToken result = apiResponse["image"].Children().FirstOrDefault();
+                image = result.ToObject<TextCamImage>();
+                image.CameraId = camera.Id;
             }
-            return null;
+            return image;
+        }
+
+        internal async Task<TextCamImage> GetImageByCameraNameImageIdAsync(string cameraName, string imageId)
+        {
+            var camera = await _repository.GetCameraByCameraNameAsync(cameraName);
+            var images = await GetCameraImagesAsync(camera);
+            return images.Where(i => i.Id == Convert.ToInt32(imageId)).FirstOrDefault();
         }
 
         internal async Task<List<TextCamImage>> GetCameraImagesAsync(Camera camera)
         {
             List<TextCamImage> camImages = new List<TextCamImage>();
-            HttpResponseMessage response = await client.GetAsync($"/images/camera/{camera.CameraId}/vote");
+            HttpResponseMessage response = await client.GetAsync($"/images/camera/{camera.CameraId_API}/vote");
             if (response.IsSuccessStatusCode)
             {
                 var jsonResult = await response.Content.ReadAsStringAsync();

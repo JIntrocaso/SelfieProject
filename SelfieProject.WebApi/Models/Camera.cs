@@ -9,7 +9,7 @@ namespace SelfieProject.WebApi.Models
     {
         public int Id { get; set; }
 
-        public string CameraId { get; set; }
+        public string CameraId_API { get; set; }
 
         public string CameraName { get; set; }
 

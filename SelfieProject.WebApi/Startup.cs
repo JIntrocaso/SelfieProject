@@ -29,14 +29,25 @@ namespace SelfieProject.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<VoteContext>(opt =>
-                //opt.UseSqlServer(Configuration.GetConnectionString("SelfieDatabase"))
-                opt.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False")
-            );
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+            {
+                services.AddDbContext<VoteContext>(opt =>
+                    opt.UseSqlServer(Configuration.GetConnectionString("SelfieApp"))
+                );
+            }
+            else
+            {
+                services.AddDbContext<VoteContext>(opt =>
+                    //opt.UseSqlServer(Configuration.GetConnectionString("SelfieDatabase"))
+                    opt.UseSqlServer(@"Server=tcp:selfieproject.database.windows.net,1433;Initial Catalog=SelfieProject;Persist Security Info=False;User ID=SelfieApp;Password=5ft9B7bVNPl9;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;")
+                    //opt.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB; Database=SelfieProject; Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False")
+                );
+            }
+            services.BuildServiceProvider().GetService<VoteContext>().Database.Migrate();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddScoped<IVoteRepository, VoteRepository>();
             services.AddScoped<TextCamService>();
-            services.AddScoped<TwilioService>();
+            services.AddScoped<VoteService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

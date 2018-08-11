@@ -12,9 +12,9 @@ namespace SelfieProject.WebApi.Models
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Camera>().HasData(
-                new Camera { Id = 1, CameraId = "10000", CameraName = "AR" },
-                new Camera { Id = 2, CameraId = "20000", CameraName = "MI" },
-                new Camera { Id = 3, CameraId = "30000", CameraName = "SF" }
+                new Camera { Id = 1, CameraId_API = "10000", CameraName = "AR" },
+                new Camera { Id = 2, CameraId_API = "20000", CameraName = "MI" },
+                new Camera { Id = 3, CameraId_API = "30000", CameraName = "SF" }
             );
 
             builder.Entity<VoteEntry>().HasData(

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SelfieProject.WebApi.Models;
 using SelfieProject.WebApi.Repositories;
 using SelfieProject.WebApi.Services;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SelfieProject.WebApi.Controllers
 {
@@ -27,8 +27,10 @@ namespace SelfieProject.WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Selfie>>> GetAllAsync()
         {
+            Trace.WriteLine("Getting Images");
             List<TextCamImage> images = await _textCamService.GetAllAsync(null);
             IEnumerable<Tuple<string, int>> voteTallys = await _repository.GetVoteTallies();
+            Trace.WriteLine("Creating Selfie List");
             List<Selfie> selfies = Selfie.CreateSelfieListAsync(images);
             foreach(Selfie selfie in selfies)
             {
@@ -37,7 +39,7 @@ namespace SelfieProject.WebApi.Controllers
             return selfies;
         }
 
-        [HttpGet("leaderboard/{cameraId}")]
+        [HttpGet("leaderboard/{cameraId:int?}")]
         public async Task<ActionResult<List<Selfie>>> GetTopSelfiesAsync(int? cameraId)
         {
             var topVoteEntries = _repository.GetTopEntriesAsync(5, cameraId);

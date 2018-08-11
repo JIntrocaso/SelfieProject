@@ -1,10 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using SelfieProject.WebApi.Repositories;
 
 namespace SelfieProject.WebApi.Models
 {
@@ -53,5 +50,6 @@ namespace SelfieProject.WebApi.Models
             }
             return list;
         }
+
     }
 }
