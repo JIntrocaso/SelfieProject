@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SelfieProject.WebApi.Models;
 using SelfieProject.WebApi.Repositories;
 using SelfieProject.WebApi.Services;
@@ -17,11 +18,13 @@ namespace SelfieProject.WebApi.Controllers
     {
         private readonly IVoteRepository _repository;
         private TextCamService _textCamService;
+        private readonly ILogger _logger;
 
-        public SelfieController(IVoteRepository repository, TextCamService textCamService)
+        public SelfieController(IVoteRepository repository, TextCamService textCamService, ILogger<SelfieController> logger)
         {
             _repository = repository;
             _textCamService = textCamService;
+            _logger = logger;
         }
 
         [HttpGet]
