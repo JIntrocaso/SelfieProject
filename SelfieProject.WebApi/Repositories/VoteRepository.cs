@@ -35,7 +35,7 @@ namespace SelfieProject.WebApi.Repositories
             {
                 Selfie selfie = new Selfie(image)
                 {
-                    VoteTotal = await _context.VoteEntries.Where(e => e.ImageId == image.Id && e.CameraId == image.CameraId).CountAsync()
+                    VoteTotal = await _context.VoteEntries.Where(e => e.ImageId == image.Id && e.CameraId == image.Camera.Id).CountAsync()
                 };
                 list.Add(new Selfie(image));
             }

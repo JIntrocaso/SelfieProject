@@ -37,23 +37,22 @@ namespace SelfieProject.WebApi.Services
             return result;
         }
 
-        internal async Task<Camera> GetCameraFromMessageBody(string message)
+        internal async Task<Camera> GetCameraByCameraName(string cameraName)
         {
-            return await _repository.GetCameraByCameraNameAsync(message.Substring(0, 2));
+            return await _repository.GetCameraByCameraNameAsync(cameraName);
         }
 
         internal async Task<bool> ValidateVoteMessageAsync(string body)
         {
-            bool result = true;
-            if (GetCameraFromMessageBody(body).Result == null)
+            if ((await GetCameraByCameraName(body.Substring(0,2))) == null)
             {
-                result = false;
+                return false;
             }
             else if ((await _textCamService.GetImageByCameraNameImageIdAsync(body.Substring(0, 2), body.Substring(2))) == null)
             {
-                result = false;
+                return false;
             }
-            return result;
+            return true;
         }
     }
 }

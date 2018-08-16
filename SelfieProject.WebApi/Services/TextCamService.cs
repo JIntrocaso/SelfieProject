@@ -46,7 +46,7 @@ namespace SelfieProject.WebApi.Services
                 JObject apiResponse = JObject.Parse(jsonResult);
                 JToken result = apiResponse["image"].Children().FirstOrDefault();
                 image = result.ToObject<TextCamImage>();
-                image.CameraId = camera.Id;
+                image.Camera = await camera;
             }
             return image;
         }
@@ -70,7 +70,7 @@ namespace SelfieProject.WebApi.Services
                 foreach(JToken result in results)
                 {
                     TextCamImage image = result.ToObject<TextCamImage>();
-                    image.CameraId = camera.Id;
+                    image.Camera = camera;
                     camImages.Add(image);
                 }
             }

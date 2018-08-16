@@ -19,11 +19,12 @@ namespace SelfieProject.WebApi.Models
             DateTaken = image.DateTaken;
             ImageThumbnailUrl = image.ThumbnailUrl;
             ImageUrl = image.Url;
+            CameraName = image.Camera.CameraName;
         }
 
         public int ImageId { get; set; }
 
-        public string CameraId { get; set; }
+        public string CameraName { get; set; }
 
         public int VoteTotal { get; set; }
 
@@ -37,7 +38,7 @@ namespace SelfieProject.WebApi.Models
         {
             get
             {
-                return CameraId + ImageId.ToString();
+                return CameraName + ImageId.ToString();
             }
         }
 
