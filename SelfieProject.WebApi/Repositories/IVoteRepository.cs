@@ -14,7 +14,7 @@ namespace SelfieProject.WebApi.Repositories
         Task<IEnumerable<Tuple<string, int>>> GetVoteTallies();
         Task<List<Selfie>> CreateSelfieListAsync(IEnumerable<TextCamImage> images, int cameraId);
         Task<Camera> GetCameraByCameraNameAsync(string cameraName);
-        Task<Camera> GetCameraByCameraAbbreviationAsync(string cameraId);
+        Task<Camera> GetCameraByCameraIdAPIAsync(string cameraId);
         Task<List<Camera>> GetCamerasAsync(int? cameraId);
         Task<IEnumerable<VoteEntry>> GetVoteEntriesForPhoneNumberAsync(string phoneNumber);
         void AddAsync(VoteEntry entry);

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SelfieProject.WebApi.Models;
 
 namespace SelfieProject.WebApi.Migrations
 {
     [DbContext(typeof(VoteContext))]
-    partial class VoteContextModelSnapshot : ModelSnapshot
+    [Migration("20180816030336_classRefactoring")]
+    partial class classRefactoring
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

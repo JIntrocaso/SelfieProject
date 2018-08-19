@@ -44,7 +44,7 @@ namespace SelfieProject.WebApi.Services
 
         internal async Task<bool> ValidateVoteMessageAsync(string body)
         {
-            if ((await GetCameraByCameraName(body.Substring(0,2))) == null)
+            if (_repository.GetCameraByCameraNameAsync(body.Substring(0, 2)) == null)
             {
                 return false;
             }

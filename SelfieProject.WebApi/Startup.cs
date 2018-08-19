@@ -45,7 +45,7 @@ namespace SelfieProject.WebApi
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddScoped<IVoteRepository, VoteRepository>();
             services.AddScoped<TextCamService>();
-            services.AddScoped<VoteService>();
+            services.AddTransient<VoteService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -44,10 +44,10 @@ namespace SelfieProject.WebApi.Repositories
 
         public async Task<Camera> GetCameraByCameraNameAsync(string cameraName)
         {
-            return await _context.Cameras.Where(c => c.CameraName == cameraName).FirstOrDefaultAsync();
+            return await _context.Cameras.Where(c => c.CameraName == cameraName.ToUpper()).FirstOrDefaultAsync();
         }
 
-        public async Task<Camera> GetCameraByCameraAbbreviationAsync(string cameraId_api)
+        public async Task<Camera> GetCameraByCameraIdAPIAsync(string cameraId_api)
         {
             return await _context.Cameras.Where(c => c.CameraId_API == cameraId_api).SingleOrDefaultAsync();
         }
