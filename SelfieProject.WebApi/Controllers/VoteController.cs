@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SelfieProject.WebApi.Filters;
 using SelfieProject.WebApi.Models;
 using SelfieProject.WebApi.Repositories;
 using SelfieProject.WebApi.Services;
@@ -10,7 +11,7 @@ namespace SelfieProject.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Produces("application/xml")]
+    [Produces("text/xml")]
     public class VoteController : ControllerBase
     {
         private readonly VoteService _voteService;
@@ -27,37 +28,33 @@ namespace SelfieProject.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(string body, string from)
+        public async Task<IActionResult> Index()
         {
             try
             {
-                string incomingMessage = body;
+                string body = Request.Form["Body"];
+                string from = Request.Form["From"];
+                _logger.LogWarning(body + " | " + body.Substring(0, 2));
                 var responseMessage = new MessagingResponse();
                 if (!_voteService.IsSpecialCommand(body))
                 {
                     if (await _voteService.PhoneNumberHasVotedToday(from))
                     {
-                        _logger.LogWarning("Phone number has voted today.");
                         textResponse = responseMessage.Message($"You have already voted today. Please vote again tomorrow. {messageEnding}").ToString();
                     }
                     else
                     {
-                        _logger.LogWarning("Phone number did not vote today.");
-                        bool isValidMessage = await _voteService.ValidateVoteMessageAsync(incomingMessage);
+                        bool isValidMessage = await _voteService.ValidateVoteMessageAsync(body);
                         if (!isValidMessage)
                         {
                             textResponse = responseMessage.Message($"This is an invalid vote. Please check the entry ID and try again. {messageEnding}").ToString();
                         }
                         else
                         {
-                            _logger.LogWarning("Getting camera by camera name");
-                            Camera camera = await _voteService.GetCameraByCameraName(incomingMessage.Substring(0, 2).ToUpper());
-                            _logger.LogWarning("Creating vote entry object");
-                            VoteEntry voteEntry = VoteEntry.CreateEntry(incomingMessage, from, camera);
+                            Camera camera = await _voteService.GetCameraByCameraName(body.Substring(0, 2).ToUpper());
+                            VoteEntry voteEntry = VoteEntry.CreateEntry(body, from, camera);
                             _repository.AddAsync(voteEntry);
-                            _logger.LogWarning("Saving vote entry object");
                             _repository.SaveAsync();
-                            _logger.LogWarning("Creating response message");
 
                             textResponse = responseMessage.Message($"Your vote is in!!. You may only vote once per day. {messageEnding}").ToString();
                         }
